@@ -1,7 +1,7 @@
 import Layout from '@/Layout'
 import Friend from '@/pages/Friend'
 import Group from '@/pages/Group'
-import Home from '@/pages/Home'
+import Home from '@/pages/Home/Home'
 import Video from '@/pages/Video'
 import { BrowserRouter, Route, Routes } from 'react-router'
 
