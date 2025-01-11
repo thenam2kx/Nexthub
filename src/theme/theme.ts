@@ -168,6 +168,11 @@ const theme = createTheme({
             backgroundColor: '#002467',
             cursor: 'pointer'
           },
+          // '*': {
+          //   scrollbarWidth: 'thin',
+          //   borderRadius: '8px',
+          //   scrollbarColor: '#8750f7 #2a1454'
+          // }
           scrollbarWidth: 'thin',
           scrollbarColor: '#8750f7 #2a1454'
         }

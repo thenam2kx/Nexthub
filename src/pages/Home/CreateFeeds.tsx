@@ -19,7 +19,7 @@ const CustomButtonFeeds = styled(Button)(({ theme }) => ({
 
 const CreateFeeds = () => {
   return (
-    <Card sx={{ width: '100%', mx: 'auto', my: 2 }}>
+    <Card sx={{ maxWidth: '680px', mx: 'auto', my: 2 }}>
       <CardContent sx={{ '&:last-child': { padding: '16px' } }}>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Avatar

@@ -22,7 +22,7 @@ const Layout = () => {
           flexShrink: 1,
           flexGrow: 1,
           flexBasis: 0,
-          padding: '8px 32px'
+          padding: { xs: '8px ', md: '8px 32px' }
         }}>
           <Outlet />
         </Box>
