@@ -1,9 +1,12 @@
+import { BrowserRouter, Route, Routes } from 'react-router'
 import Layout from '@/Layout'
+import Signin from '@/pages/auth/signin/signin'
 import Friend from '@/pages/Friend'
 import Group from '@/pages/Group'
 import Home from '@/pages/Home/Home'
 import Video from '@/pages/Video'
-import { BrowserRouter, Route, Routes } from 'react-router'
+import Signup from '@/pages/auth/signup/signup'
+import VerifyPage from '@/pages/auth/verify/verify'
 
 
 const PublicRouter = () => {
@@ -16,6 +19,9 @@ const PublicRouter = () => {
           <Route path='videos' element={<Video />} />
           <Route path='groups' element={<Group />} />
         </Route>
+        <Route path='/signin' element={<Signin />}/>
+        <Route path='/signup' element={<Signup />}/>
+        <Route path='/verify' element={<VerifyPage />}/>
       </Routes>
     </BrowserRouter>
   )
