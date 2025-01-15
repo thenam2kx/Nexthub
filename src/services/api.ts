@@ -29,6 +29,21 @@ export const reSendEmailAPI = async (email: string) => {
   return axios.post<IBackendResponse<ISigninResponse>>(url, { email })
 }
 
+export const forgotPasswordAPI = async (email: string) => {
+  const url = '/api/v1/auth/forgot-password'
+  return axios.post<IBackendResponse<ISigninResponse>>(url, { email })
+}
+
+export const verifyCodePasswordAPI = async (dataReq: { code: string, email: string }) => {
+  const url = '/api/v1/auth/verify-code-password'
+  return axios.post<IBackendResponse<ISigninResponse>>(url, dataReq)
+}
+
+export const changePasswordAPI = async (dataReq: { password: string, email: string }) => {
+  const url = '/api/v1/auth/change-password'
+  return axios.post<IBackendResponse<ISigninResponse>>(url, dataReq)
+}
+
 export const getAccount = async () => {
   const url = '/api/v1/auth/account'
   return axios.get(url)

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -11,27 +12,37 @@ interface ForgotPasswordProps {
   handleClose: () => void
 }
 
-const ForgotPassword = ({ open, handleClose }: ForgotPasswordProps) => {
+const ForgotPassword = memo(({ open, handleClose }: ForgotPasswordProps) => {
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    // handleClose()
+
+    const data = new FormData(event.currentTarget)
+    const email = data.get('email') as string
+    console.log('🚀 ~ handleSubmit ~ email:', email)
+  }
+
   return (
     <Dialog
       open={open}
       onClose={handleClose}
+      // onSubmit={handleSubmit}
       PaperProps={{
         component: 'form',
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-          event.preventDefault()
-          handleClose()
-        },
-        sx: { backgroundImage: 'none' }
+        onSubmit: () => handleSubmit,
+        sx: { backgroundImage: 'none', minWidth: { xs: '90%', sm: '500px', md: '700px' } }
       }}
     >
-      <DialogTitle>Reset password</DialogTitle>
-      <DialogContent
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
-      >
+      <DialogTitle>Quên mật khẩu ?</DialogTitle>
+      <DialogContent sx={{
+        gap: 2,
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
         <DialogContentText>
-          Enter your account&apos;s email address, and we&apos;ll send you a link to
-          reset your password.
+          Nhập địa chỉ email để đặt lại mật khẩu.
         </DialogContentText>
         <OutlinedInput
           autoFocus
@@ -39,8 +50,7 @@ const ForgotPassword = ({ open, handleClose }: ForgotPasswordProps) => {
           margin="dense"
           id="email"
           name="email"
-          label="Email address"
-          placeholder="Email address"
+          placeholder="email@gmail.com"
           type="email"
           fullWidth
         />
@@ -53,6 +63,6 @@ const ForgotPassword = ({ open, handleClose }: ForgotPasswordProps) => {
       </DialogActions>
     </Dialog>
   )
-}
+})
 
 export default ForgotPassword

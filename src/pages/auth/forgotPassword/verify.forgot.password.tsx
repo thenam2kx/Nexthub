@@ -10,9 +10,9 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useNavigate, useSearchParams } from 'react-router'
-import { reSendEmailAPI, verifyAPI } from '@/services/api'
+import { reSendEmailAPI, verifyAPI, verifyCodePasswordAPI } from '@/services/api'
 
-const VerifyPage = () => {
+const VerifyForgotPassword = () => {
   const [verifyCodeError, setVerifyCodeError] = useState(false)
   const [verifyCodeErrorMessage, setVerifyCodeErrorMessage] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -38,20 +38,22 @@ const VerifyPage = () => {
   }
 
   const handleResend = async () => {
-    try {
-      setIsLoadingResend(true)
-      const res = await reSendEmailAPI(email)
-      if (res.data) {
-        toast.success(res.message)
-      } else {
-        toast.error(res.message)
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log('🚀 ~ handleResend ~ error:', error)
-    } finally {
-      setIsLoadingResend(false)
-    }
+    // try {
+    //   setIsLoadingResend(true)
+    //   const res = await reSendEmailAPI(email)
+    //   if (res.data) {
+    //     toast.success(res.message)
+    //   } else {
+    //     toast.error(res.message)
+    //   }
+    // } catch (error) {
+    //   // eslint-disable-next-line no-console
+    //   console.log('🚀 ~ handleResend ~ error:', error)
+    // } finally {
+    //   setIsLoadingResend(false)
+    // }
+
+    toast.success('🦄 Tính năng đang phát triển...')
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -71,10 +73,10 @@ const VerifyPage = () => {
 
     try {
       setIsLoading(true)
-      const res = await verifyAPI(dataReq)
+      const res = await verifyCodePasswordAPI(dataReq)
       if (res.data) {
         toast.success(`🦄 ${res.message}`)
-        navigate('/signin')
+        navigate(`/change-password?email=${encodeURIComponent(email)}`)
       } else {
         toast.error(`🦄 ${res.message}`)
       }
@@ -96,7 +98,7 @@ const VerifyPage = () => {
           variant="h4"
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
-          Kích hoạt tài khoản
+          Xác nhận tài khoản
         </Typography>
         <Box
           component="form"
@@ -154,10 +156,9 @@ const VerifyPage = () => {
             Xác nhận
           </LoadingButton>
         </Box>
-
       </CustomizeCard>
     </CustomizeContainer>
   )
 }
 
-export default VerifyPage
+export default VerifyForgotPassword

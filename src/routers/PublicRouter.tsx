@@ -7,6 +7,9 @@ import Home from '@/pages/Home/Home'
 import Video from '@/pages/Video'
 import Signup from '@/pages/auth/signup/signup'
 import VerifyPage from '@/pages/auth/verify/verify'
+import ForgotPasswordPage from '@/pages/auth/forgotPassword/forgot.password'
+import VerifyForgotPassword from '@/pages/auth/forgotPassword/verify.forgot.password'
+import ChangePassword from '@/pages/auth/forgotPassword/change.password'
 
 
 const PublicRouter = () => {
@@ -22,6 +25,9 @@ const PublicRouter = () => {
         <Route path='/signin' element={<Signin />}/>
         <Route path='/signup' element={<Signup />}/>
         <Route path='/verify' element={<VerifyPage />}/>
+        <Route path='/forgot-password' element={<ForgotPasswordPage />}/>
+        <Route path='/verify-code-password' element={<VerifyForgotPassword />}/>
+        <Route path='/change-password' element={<ChangePassword />}/>
       </Routes>
     </BrowserRouter>
   )
