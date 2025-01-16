@@ -6,7 +6,7 @@ export interface ISignin {
 }
 
 
-export const signin = async (data: ISignin) => {
+export const signinAPI = async (data: ISignin) => {
   const url = '/api/v1/auth/signin'
   return axios.post<IBackendResponse<ISigninResponse>>(url, {
     username: data.username,
@@ -17,6 +17,11 @@ export const signin = async (data: ISignin) => {
 export const signupAPI = async (data: ISignup) => {
   const url = '/api/v1/auth/signup'
   return axios.post<IBackendResponse<ISigninResponse>>(url, data)
+}
+
+export const signoutAPI = async () => {
+  const url = '/api/v1/auth/signout'
+  return axios.post<IBackendResponse<ISigninResponse>>(url)
 }
 
 export const verifyAPI = async (dataReq: { code: string, email: string }) => {

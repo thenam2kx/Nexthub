@@ -1,4 +1,6 @@
+import { store } from '@/redux/store'
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+
 
 // Set config defaults when creating the instance
 const instance = axios.create({
@@ -12,7 +14,8 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(function (config: InternalAxiosRequestConfig) {
   // Do something before request is sent
-  config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`
+  config.headers.Authorization = `Bearer ${store.getState().auth.accessToken}`
+  // config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`
   return config
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }, function (error: any) {

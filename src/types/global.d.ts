@@ -30,4 +30,10 @@ declare global {
     password: string
   }
 
+  interface IUserAuth {
+    email: string,
+    fullname: string
+    role: string
+    _id: string
+  }
 }

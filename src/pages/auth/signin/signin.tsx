@@ -13,7 +13,7 @@ import { SitemarkIcon } from '@/pages/auth/customizations/icons.customize'
 import CustomizeContainer from '@/pages/auth/customizations/container.customize'
 import SocialMedia from '../customizations/social.media'
 import { useNavigate } from 'react-router'
-import { ISignin, reSendEmailAPI, signin } from '@/services/api'
+import { ISignin, reSendEmailAPI, signinAPI } from '@/services/api'
 import FormHelperText from '@mui/material/FormHelperText'
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -22,6 +22,8 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Link as RouterLink } from 'react-router'
+import { useAppDispatch } from '@/redux/hooks'
+import { signin } from '@/redux/auth/auth.slice'
 
 const Signin = () => {
   const [emailError, setEmailError] = useState(false)
@@ -32,6 +34,7 @@ const Signin = () => {
   const [showPassword, setShowPassword] = useState(false)
 
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -62,7 +65,7 @@ const Signin = () => {
 
     try {
       setIsLoading(true)
-      const res = await signin(condition)
+      const res = await signinAPI(condition)
 
       if (res.statusCode === 401) {
         toast.error(`🦄 ${res.message}`)
@@ -73,13 +76,12 @@ const Signin = () => {
       }
 
       if (res.data) {
+        const user = res.data.user
+        const accessToken = res.data.access_token
         toast.success(`🦄 ${res.message}`)
 
-        // if (remember) {
-        //   localStorage.setItem('access_token', res.data.access_token)
-        // }
 
-        localStorage.setItem('access_token', res.data.access_token)
+        dispatch(signin({ user, accessToken }))
         navigate('/')
       } else {
         toast.error(`🦄 ${res.message}`)

@@ -7,9 +7,23 @@ import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import DropdownMenu from '@/components/DropdownMenu/DropdownMenu'
 import HelpIcon from '@mui/icons-material/Help'
+import { useAppDispatch } from '@/redux/hooks'
+import { signout } from '@/redux/auth/auth.slice'
+import { signoutAPI } from '@/services/api'
+import { toast } from 'react-toastify'
 
 const MenuList = () => {
   const handleClose = () => {}
+  const dispatch = useAppDispatch()
+
+  const handleSignout = async () => {
+    const res = await signoutAPI()
+    if (res.data) {
+      toast.success('🦄 Đăng xuất thành công!')
+      dispatch(signout())
+    }
+  }
+
   return (
     <>
       <MenuItem onClick={handleClose}>
@@ -34,7 +48,7 @@ const MenuList = () => {
         </ListItemIcon>
         Cài đặt
       </MenuItem>
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={handleSignout}>
         <ListItemIcon>
           <Logout fontSize="small" />
         </ListItemIcon>
