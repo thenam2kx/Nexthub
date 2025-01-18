@@ -49,8 +49,13 @@ export const changePasswordAPI = async (dataReq: { password: string, email: stri
   return axios.post<IBackendResponse<ISigninResponse>>(url, dataReq)
 }
 
-export const getAccount = async () => {
+export const getAccountAPI = async () => {
   const url = '/api/v1/auth/account'
+  return axios.get(url)
+}
+
+export const getRefreshTokenAPI = async () => {
+  const url = '/api/v1/auth/refresh-token'
   return axios.get(url)
 }
 

@@ -1,44 +1,81 @@
-import { store } from '@/redux/store'
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios, { InternalAxiosRequestConfig } from 'axios'
+import { Mutex } from 'async-mutex'
+import store from '@/redux/store'
+import { setRefreshToken, setAccessToken } from '@/redux/auth/auth.slice'
 
+interface AccessTokenResponse {
+  access_token: string;
+}
 
 // Set config defaults when creating the instance
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL as string
+  baseURL: import.meta.env.VITE_BACKEND_URL as string,
+  withCredentials: true
 })
 
-// Alter defaults after instance has been created
-// instance.defaults.headers.common['Authorization'] = localStorage.getItem('access_token');
+const mutex = new Mutex()
 
+const handleRefreshToken = async (): Promise<string | null> => {
+  return await mutex.runExclusive(async () => {
+    const res = await instance.get<IBackendResponse<AccessTokenResponse>>(
+      '/api/v1/auth/refresh-token'
+    )
+    if (res && res.data) return res.data.access_token
+    else return null
+  })
+}
 
 // Add a request interceptor
-instance.interceptors.request.use(function (config: InternalAxiosRequestConfig) {
-  // Do something before request is sent
-  config.headers.Authorization = `Bearer ${store.getState().auth.accessToken}`
-  // config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`
-  return config
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-}, function (error: any) {
-  // Do something with request error
-  return Promise.reject(error)
-})
+instance.interceptors.request.use(
+  function (config: InternalAxiosRequestConfig) {
+    // Do something before request is sent
+    // const accessToken = 'store.getState().auth.accessToken'
+    const accessToken = store.getState().auth.accessToken
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`
+    }
+    if (!config.headers.Accept && config.headers['Content-Type']) {
+      config.headers.Accept = 'application/json'
+      config.headers['Content-Type'] = 'application/json; charset=utf-8'
+    }
+    return config
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function (error: any) {
+    // Do something with request error
+    return Promise.reject(error)
+  }
+)
 
-// Add a response interceptor
-instance.interceptors.response.use(function (response: AxiosResponse) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
-  if (response && response.data) {
-    return response.data
+instance.interceptors.response.use(
+  (res) => res.data,
+  async (error) => {
+    if (
+      error.config &&
+      error.response &&
+      +error.response.status === 401 &&
+      error.config.url !== '/api/v1/auth/signin'
+    ) {
+      const access_token = await handleRefreshToken()
+      if (access_token) {
+        error.config.headers['Authorization'] = `Bearer ${access_token}`
+        store.dispatch(setAccessToken({ accessToken: access_token }))
+        return instance.request(error.config)
+      }
+    }
+
+    if (
+      error.config &&
+      error.response &&
+      +error.response.status === 400 &&
+      error.config.url === '/api/v1/auth/refresh-token'
+    ) {
+      const message = error?.response?.data?.message ?? 'Có lỗi xảy ra, vui lòng đăng nhập!'
+      store.dispatch(setRefreshToken({ status: true, message: message }))
+    }
+
+    return error?.response?.data ?? Promise.reject(error)
   }
-  return response
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-}, function (error: any) {
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
-  if (error?.response?.data) {
-    return error?.response?.data
-  }
-  return Promise.reject(error)
-})
+)
 
 export default instance

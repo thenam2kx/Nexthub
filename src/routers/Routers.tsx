@@ -20,10 +20,10 @@ const Routers = () => {
       <Routes>
         <Route element={<PrivateRouter />}>
           <Route path='/' element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path='friends' element={<Friend />} />
-            <Route path='videos' element={<Video />} />
-            <Route path='groups' element={<Group />} />
+            <Route index element={<Home />}/>
+            <Route path='friends' element={<Friend />}/>
+            <Route path='videos' element={<Video />}/>
+            <Route path='groups' element={<Group />}/>
           </Route>
         </Route>
 

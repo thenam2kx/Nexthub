@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import App from '@/App'
 import theme from '@/theme/theme'
 import { Provider } from 'react-redux'
-import { persistor, store } from './redux/store'
+import store, { persistor } from './redux/store'
 import { ToastContainer } from 'react-toastify'
 import { PersistGate } from 'redux-persist/integration/react'
 

@@ -6,6 +6,7 @@ import AsideRight from '@/components/asideRight/AsideRight'
 
 
 const Layout = () => {
+
   return (
     <Box component="section" sx={{
       width: '100vw',

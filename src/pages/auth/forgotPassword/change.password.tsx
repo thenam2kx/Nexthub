@@ -67,7 +67,7 @@ const ChangePassword = () => {
 
       if (res.data) {
         toast.success(`🦄 ${res.message}`)
-        navigate('/')
+        navigate('/signin')
       } else {
         toast.error(`🦄 ${res.message}`)
       }
