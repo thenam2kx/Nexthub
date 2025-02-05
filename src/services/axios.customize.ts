@@ -7,10 +7,23 @@ interface AccessTokenResponse {
   access_token: string;
 }
 
+
+let accessToken = store.getState().auth.accessToken
+store.subscribe(() => {
+  const newAccessToken = store.getState().auth.accessToken
+  if (newAccessToken !== accessToken) {
+    accessToken = newAccessToken
+  }
+})
+
 // Set config defaults when creating the instance
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL as string,
-  withCredentials: true
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
 })
 
 const mutex = new Mutex()
@@ -29,15 +42,11 @@ const handleRefreshToken = async (): Promise<string | null> => {
 instance.interceptors.request.use(
   function (config: InternalAxiosRequestConfig) {
     // Do something before request is sent
-    // const accessToken = 'store.getState().auth.accessToken'
     const accessToken = store.getState().auth.accessToken
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`
     }
-    if (!config.headers.Accept && config.headers['Content-Type']) {
-      config.headers.Accept = 'application/json'
-      config.headers['Content-Type'] = 'application/json; charset=utf-8'
-    }
+
     return config
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

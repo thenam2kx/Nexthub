@@ -14,10 +14,16 @@ export const signinAPI = async (data: ISignin) => {
   })
 }
 
+export const signinGoogleAPI = async () => {
+  const url = '/api/v1/auth/google/redirect'
+  return axios.post<IBackendResponse<ISigninResponse>>(url)
+}
+
 export const signupAPI = async (data: ISignup) => {
   const url = '/api/v1/auth/signup'
   return axios.post<IBackendResponse<ISigninResponse>>(url, data)
 }
+
 
 export const signoutAPI = async () => {
   const url = '/api/v1/auth/signout'
@@ -59,3 +65,7 @@ export const getRefreshTokenAPI = async () => {
   return axios.get(url)
 }
 
+export const getUserAccountAPI = async (id: string) => {
+  const url = `/api/v1/users/${id}`
+  return axios.get(url)
+}

@@ -9,7 +9,14 @@ import HeaderLeft from './headerLeft/HeaderLeft'
 
 const Header = () => {
   return (
-    <Box sx={{ height: (theme) => theme.nexthub.appHeader }}>
+    <Box sx={{
+      position: 'sticky',
+      top: 0,
+      left: 0,
+      zIndex: 99,
+      width: '100%',
+      height: (theme) => theme.nexthub.appHeader
+    }}>
       <AppBar position="static" sx={{
         height: '100%',
         boxShadow: 'none',

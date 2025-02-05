@@ -8,6 +8,8 @@ import { Provider } from 'react-redux'
 import store, { persistor } from './redux/store'
 import { ToastContainer } from 'react-toastify'
 import { PersistGate } from 'redux-persist/integration/react'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,19 +17,21 @@ createRoot(document.getElementById('root')!).render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <CssBaseline />
-          <App />
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <App />
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+          </GoogleOAuthProvider>
         </PersistGate>
       </Provider>
     </ThemeProvider>

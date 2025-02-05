@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getAccountAPI } from '@/services/api'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
 interface AuthState {
@@ -26,13 +25,13 @@ const initialState: AuthState = {
   user: null
 }
 
-export const fetchAccount = createAsyncThunk(
-  'account/fetchAccount',
-  async () => {
-    const response = await getAccountAPI()
-    return response.data
-  }
-)
+// export const fetchAccount = createAsyncThunk(
+//   'account/fetchAccount',
+//   async () => {
+//     const response = await getAccountAPI()
+//     return response.data
+//   }
+// )
 
 const authSlice = createSlice({
   name: 'auth',
@@ -60,34 +59,34 @@ const authSlice = createSlice({
       state.errorRefreshToken = action.payload?.message ?? ''
     }
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchAccount.pending, (state, action) => {
-      if (action.payload) {
-        state.isAuthenticated = false
-        state.isLoading = true
-      }
-    })
+  // extraReducers: (builder) => {
+  //   builder.addCase(fetchAccount.pending, (state, action) => {
+  //     if (action.payload) {
+  //       state.isAuthenticated = false
+  //       state.isLoading = true
+  //     }
+  //   })
 
-    builder.addCase(fetchAccount.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.isAuthenticated = true
-        state.isLoading = false
-        if (state.user) {
-          state.user._id = action?.payload?.user?._id
-          state.user.email = action.payload.user?.email
-          state.user.fullname = action.payload.user?.fullname
-          state.user.role = action?.payload?.user?.role
-        }
-      }
-    })
+  //   builder.addCase(fetchAccount.fulfilled, (state, action) => {
+  //     if (action.payload) {
+  //       state.isAuthenticated = true
+  //       state.isLoading = false
+  //       if (state.user) {
+  //         state.user._id = action?.payload?.user?._id
+  //         state.user.email = action.payload.user?.email
+  //         state.user.fullname = action.payload.user?.fullname
+  //         state.user.role = action?.payload?.user?.role
+  //       }
+  //     }
+  //   })
 
-    builder.addCase(fetchAccount.rejected, (state, action) => {
-      if (action.payload) {
-        state.isAuthenticated = false
-        state.isLoading = false
-      }
-    })
-  }
+  //   builder.addCase(fetchAccount.rejected, (state, action) => {
+  //     if (action.payload) {
+  //       state.isAuthenticated = false
+  //       state.isLoading = false
+  //     }
+  //   })
+  // }
 })
 
 export const { signin, signout, setRefreshToken, setAccessToken } = authSlice.actions

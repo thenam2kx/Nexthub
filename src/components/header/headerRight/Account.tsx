@@ -11,6 +11,8 @@ import { useAppDispatch } from '@/redux/hooks'
 import { signout } from '@/redux/auth/auth.slice'
 import { signoutAPI } from '@/services/api'
 import { toast } from 'react-toastify'
+import { Link as RouterLink } from 'react-router'
+import Link from '@mui/material/Link'
 
 const MenuList = () => {
   const handleClose = () => {}
@@ -27,7 +29,13 @@ const MenuList = () => {
   return (
     <>
       <MenuItem onClick={handleClose}>
-        <Avatar /> Tài khoản của tôi
+        <Link
+          component={RouterLink}
+          to='/profile'
+          sx={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}
+        >
+          <Avatar /> Tài khoản của tôi
+        </Link>
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>

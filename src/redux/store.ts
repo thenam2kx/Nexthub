@@ -1,9 +1,10 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+// import { combineReducers } from 'redux'
+import authReducer from './auth/auth.slice'
 import commentReducer from './comment/comment.slice'
 import postReducer from './post/post.slice'
-import authReducer from './auth/auth.slice'
 
 // Config redux-persist
 const persistConfig = {
